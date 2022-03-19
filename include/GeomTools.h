@@ -8,15 +8,18 @@
 #include "Eigen/Dense"
 
 #include "PlanarRegion.h"
+#include <stack>
+#include <iostream>
+#include <string>
+#include <fstream>
 
 typedef Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic> BoolDynamicMatrix;
 
-class AppUtils;
 
 class GeomTools
 {
    public:
-      static void CanvasBoundaryDFS(uint16_t x, uint16_t y, BoolDynamicMatrix& canvas, BoolDynamicMatrix& visited, std::vector<Eigen::Vector2f>& concaveHull, Eigen::Vector2f start, AppUtils& appUtils, float scale);
+      static void CanvasBoundaryDFS(uint16_t x, uint16_t y, BoolDynamicMatrix& canvas, BoolDynamicMatrix& visited, std::vector<Eigen::Vector2f>& concaveHull, Eigen::Vector2f start, float scale);
 
       static std::vector<Eigen::Vector2f> CanvasApproximateConcaveHull(std::vector<Eigen::Vector2f> points, uint16_t windowHeight, uint16_t windowWidth);
 

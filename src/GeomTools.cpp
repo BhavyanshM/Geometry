@@ -3,9 +3,7 @@
 //
 
 #include "GeomTools.h"
-#include "AppUtils.h"
-#include <stack>
-#include <iostream>
+
 
 Eigen::Matrix3f GeomTools::GetRotationFromAngleApproximations(Eigen::Vector3f eulerAngles)
 {
@@ -192,7 +190,7 @@ float CheckConcavity(std::vector<Eigen::Vector2f> concaveHull, Eigen::Vector2f n
 }
 
 void GeomTools::CanvasBoundaryDFS(uint16_t x, uint16_t y, BoolDynamicMatrix& canvas, BoolDynamicMatrix& visited, std::vector<Eigen::Vector2f>& concaveHull, Eigen::Vector2f start,
-                                  AppUtils& appUtils, float scale)
+                                   float scale)
 {
    if (visited(x, y) || loopComplete(concaveHull.rbegin()[0], Eigen::Vector2f((start.x() - canvas.rows()/2) / scale, (start.y() - canvas.cols()/2) / scale), concaveHull.size()))
       return;
@@ -205,7 +203,6 @@ void GeomTools::CanvasBoundaryDFS(uint16_t x, uint16_t y, BoolDynamicMatrix& can
       concaveHull.emplace_back(Eigen::Vector2f(((float) x - canvas.rows()/2) / (float) scale  , ((float)y - canvas.cols()/2) / (float)scale));
    }
 
-//   appUtils.displayCanvasWithWindow(canvas, Eigen::Vector2i(x, y), 3);
 
    for (int i = -3; i < 3; i++)
    {
@@ -217,7 +214,7 @@ void GeomTools::CanvasBoundaryDFS(uint16_t x, uint16_t y, BoolDynamicMatrix& can
             {
                if (getVisitedCount(visited, x + i, y + j) > 24)
                   continue;
-               CanvasBoundaryDFS(x + i, y + j, canvas, visited, concaveHull, start, appUtils, scale);
+               CanvasBoundaryDFS(x + i, y + j, canvas, visited, concaveHull, start,scale);
             }
             visited(x + i, y + j) = 1;
          }
@@ -236,8 +233,6 @@ std::vector<Eigen::Vector2f> GeomTools::CanvasApproximateConcaveHull(std::vector
    BoolDynamicMatrix visited(r, c);
    visited.setZero();
 
-   AppUtils appUtils;
-   appUtils.setDisplayResolution(canvas.rows() * 6, canvas.cols() * 6);
 
    /* Draw points on canvas using origin and bounding box dimensions. */
    int scale = 45;
@@ -251,9 +246,7 @@ std::vector<Eigen::Vector2f> GeomTools::CanvasApproximateConcaveHull(std::vector
 
    /* Traverse through the boundary and extract lower vertex-count ordered concave hull. */
    CanvasBoundaryDFS((uint16_t) (r / 2 + points[0].x() * scale), (uint16_t) (c / 2 + points[0].y() * scale), canvas, visited, concaveHull,
-                     Eigen::Vector2f((r / 2 + points[0].x() * scale), (c / 2 + points[0].y() * scale)), appUtils, scale);
-
-//   appUtils.displayPointSet2D(concaveHull, Eigen::Vector2f(r/2, c/2), scale);
+                     Eigen::Vector2f((r / 2 + points[0].x() * scale), (c / 2 + points[0].y() * scale)), scale);
 
 
    std::vector<Eigen::Vector2f> finalConcaveHull;

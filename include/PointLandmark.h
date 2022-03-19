@@ -7,7 +7,6 @@
 
 #include "Eigen/Core"
 #include "vector"
-#include "Core/Log.h"
 
 class PointLandmark
 {
