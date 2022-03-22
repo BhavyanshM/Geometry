@@ -213,7 +213,7 @@ void PlanarRegion::WriteToFile(std::ofstream& file)
 
 void PlanarRegion::transform(RigidBodyTransform transform)
 {
-   this->transform(transform.getMatrix().block<3, 1>(0, 3), transform.getMatrix().block<3, 3>(0, 0));
+   this->transform(transform.GetMatrix().block<3, 1>(0, 3), transform.GetMatrix().block<3, 3>(0, 0));
 }
 
 void PlanarRegion::transform(Eigen::Vector3d translation, Eigen::Matrix3d rotation)

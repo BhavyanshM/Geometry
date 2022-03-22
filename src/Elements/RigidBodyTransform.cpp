@@ -4,14 +4,16 @@
 
 #include "RigidBodyTransform.h"
 
+#include <utility>
+
 RigidBodyTransform::RigidBodyTransform()
 {
    this->matrix = Eigen::Matrix4d::Identity();
 }
 
-RigidBodyTransform::RigidBodyTransform(const Eigen::Matrix4d& mat)
+RigidBodyTransform::RigidBodyTransform(Eigen::Matrix4d mat)
 {
-   this->matrix = mat;
+   this->matrix = std::move(mat);
 }
 
 void RigidBodyTransform::setToInverse()
@@ -49,7 +51,7 @@ void RigidBodyTransform::setRotationAndTranslation(const Eigen::Vector3d& eulerA
    this->matrix.block<3, 1>(0, 3) = translation;
 }
 
-void RigidBodyTransform::setRotationAndTranslation(const Eigen::Quaterniond& orientation, const Eigen::Vector3d& translation)
+void RigidBodyTransform::SetQuaternionAndTranslation(const Eigen::Quaterniond& orientation, const Eigen::Vector3d& translation)
 {
    this->matrix.block<3, 3>(0, 0) = orientation.toRotationMatrix();
    this->matrix.block<3, 1>(0, 3) = translation;
@@ -62,7 +64,7 @@ void RigidBodyTransform::setRotationAndTranslation(const Eigen::Matrix3d& rotati
    this->matrix.block<3, 1>(0, 3) = translation;
 }
 
-Eigen::Matrix4d RigidBodyTransform::getMatrix()
+const Eigen::Matrix4d& RigidBodyTransform::GetMatrix() const
 {
    return matrix;
 }
@@ -72,12 +74,12 @@ void RigidBodyTransform::setMatrix(const Eigen::Matrix4d& matrix)
    this->matrix = matrix;
 }
 
-void RigidBodyTransform::multiplyLeft(const RigidBodyTransform& transform)
+void RigidBodyTransform::MultiplyLeft(const RigidBodyTransform& transform)
 {
    this->matrix = transform.matrix * this->matrix;
 }
 
-void RigidBodyTransform::multiplyRight(const RigidBodyTransform& transform)
+void RigidBodyTransform::MultiplyRight(const RigidBodyTransform& transform)
 {
    this->matrix = this->matrix * transform.matrix;
 }
@@ -92,14 +94,19 @@ void RigidBodyTransform::print()
 //   std::cout << this->matrix << std::endl;
 }
 
-Eigen::Vector3d RigidBodyTransform::getTranslation()
+Eigen::Vector3d RigidBodyTransform::GetTranslation()
 {
    return this->matrix.block<3, 1>(0, 3);
 }
 
-Eigen::Quaterniond RigidBodyTransform::getQuaternion()
+Eigen::Quaterniond RigidBodyTransform::GetQuaternion()
 {
    return Eigen::Quaterniond(this->matrix.block<3, 3>(0, 0));
+}
+
+Eigen::Matrix3d RigidBodyTransform::GetRotation()
+{
+   return this->matrix.block<3, 3>(0, 0);
 }
 
 void RigidBodyTransform::rotateX(float rad)

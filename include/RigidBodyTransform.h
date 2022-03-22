@@ -12,10 +12,13 @@ class RigidBodyTransform
 {
    private:
       Eigen::Matrix4d matrix;
+
+      int _id;
+
    public:
       RigidBodyTransform();
 
-      RigidBodyTransform(const Eigen::Matrix4d& matrix);
+      RigidBodyTransform(Eigen::Matrix4d matrix);
 
       RigidBodyTransform(const RigidBodyTransform& other) : matrix(other.matrix){}
 
@@ -27,13 +30,17 @@ class RigidBodyTransform
 
       RigidBodyTransform getInverse();
 
-      Eigen::Matrix4d getMatrix();
+      const Eigen::Matrix4d& GetMatrix() const;
+
+      int GetID() const {return _id;};
+
+      void SetID(int id) {_id = id;};
 
       void setMatrix(const Eigen::Matrix4d& matrix);
 
-      void multiplyLeft(const RigidBodyTransform& transform);
+      void MultiplyLeft(const RigidBodyTransform& transform);
 
-      void multiplyRight(const RigidBodyTransform& transform);
+      void MultiplyRight(const RigidBodyTransform& transform);
 
       Eigen::Vector3d transformVector(const Eigen::Vector3d& vector);
 
@@ -43,11 +50,13 @@ class RigidBodyTransform
 
       void setRotationAndTranslation(const Eigen::Vector3d& eulerAngles, const Eigen::Vector3d& translation);
 
-      void setRotationAndTranslation(const Eigen::Quaterniond& orientation, const Eigen::Vector3d& translation);
+      void SetQuaternionAndTranslation(const Eigen::Quaterniond& orientation, const Eigen::Vector3d& translation);
 
-      Eigen::Vector3d getTranslation();
+      Eigen::Vector3d GetTranslation();
 
-      Eigen::Quaterniond getQuaternion();
+      Eigen::Matrix3d GetRotation();
+
+      Eigen::Quaterniond GetQuaternion();
 
       void rotateX(float angleRad);
 
