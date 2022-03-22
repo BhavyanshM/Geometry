@@ -333,12 +333,13 @@ void GeomTools::SaveRegions(std::vector<std::shared_ptr<PlanarRegion>> regions, 
    //   std::cout << "Writing Regions to:" << fileName << std::endl;
 }
 
-void GeomTools::AppendMatchesToFile(const std::vector<std::pair<int, int>>& matches, const std::string& filename, int prevId, int curId)
+void GeomTools::AppendMeasurementsToFile(const Eigen::Matrix4f odometry, const std::vector<std::pair<int, int>>& matches, const std::string& filename, int prevId, int curId)
 {
    std::ofstream file;
    file.open(filename, std::fstream::in | std::fstream::out | std::fstream::app);
    file << "NumMatches:" << matches.size() << std::endl;
    file << "IDs:" << prevId << "," << curId << std::endl;
+   file << "Pose:" << odometry << std::endl;
    for (auto match : matches)
    {
       file << "Match:" << match.first << "," << match.second << std::endl;

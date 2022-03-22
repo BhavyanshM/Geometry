@@ -7,6 +7,7 @@
 
 #include "Eigen/Dense"
 #include "RigidBodyTransform.h"
+#include "vector"
 
 class Plane3D
 {
