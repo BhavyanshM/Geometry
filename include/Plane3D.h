@@ -22,7 +22,7 @@ class Plane3D
 
       void SetData(const Eigen::Vector4d& data) { _params = data;}
 
-      int GetID() const {return _id;}
+      int GetID() const {return _id + 1;}
 
       void SetID(int id) { _id = id;}
 
@@ -45,8 +45,9 @@ struct PlaneSet3D
       int poseId = 0;
    public:
       int GetID() const { return poseId;}
+      void SetID(int id) { poseId = id;}
 
-      const std::vector<Plane3D>& GetPlanes() const { return planes;}
+      std::vector<Plane3D>& GetPlanes() { return planes;}
 
 };
 
