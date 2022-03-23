@@ -290,11 +290,11 @@ void PlanarRegion::ComputeBoundaryVerticesPlanar()
    Eigen::AngleAxisf angleAxis(angle, axis);
    Eigen::Matrix3d rotation = angleAxis.toRotationMatrix().cast<double>();
    Eigen::Vector3d translation = Eigen::Vector3d(this->center.cast<double>());
-   transformToWorldFrame.setRotationAndTranslation(rotation, translation);
+   transformToWorldFrame.SetAnglesAndTranslation(rotation, translation);
 
    for (int i = 0; i < boundaryVertices.size(); i++)
    {
-      Eigen::Vector3f localPoint = transformToWorldFrame.getInverse().transformVector(boundaryVertices[i].cast<double>()).cast<float>();
+      Eigen::Vector3f localPoint = transformToWorldFrame.GetInverse().transformVector(boundaryVertices[i].cast<double>()).cast<float>();
       this->planarPatchCentroids.emplace_back(Eigen::Vector2f(localPoint.x(), localPoint.y()));
    }
 }

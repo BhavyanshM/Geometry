@@ -22,7 +22,7 @@ void RigidBodyTransform::setToInverse()
    this->matrix.block<3, 3>(0, 0) = this->matrix.block<3, 3>(0, 0).transpose();
 }
 
-RigidBodyTransform RigidBodyTransform::getInverse()
+RigidBodyTransform RigidBodyTransform::GetInverse()
 {
    RigidBodyTransform transformToPack;
    transformToPack.matrix.block<3, 3>(0, 0) = this->matrix.block<3, 3>(0, 0).transpose();
@@ -41,11 +41,11 @@ RigidBodyTransform::RigidBodyTransform(const Eigen::Vector3d& eulerAngles, const
    this->matrix.block<3, 1>(0, 3) = translation;
 }
 
-void RigidBodyTransform::setRotationAndTranslation(const Eigen::Vector3d& eulerAngles, const Eigen::Vector3d& translation)
+void RigidBodyTransform::SetAnglesAndTranslation(const Eigen::Vector3d& angles, const Eigen::Vector3d& translation)
 {
    Eigen::Matrix3d rotation;
-   rotation = Eigen::AngleAxisd((double) eulerAngles.x(), Eigen::Vector3d::UnitX()) * Eigen::AngleAxisd((double) eulerAngles.y(), Eigen::Vector3d::UnitY()) *
-              Eigen::AngleAxisd((double) eulerAngles.z(), Eigen::Vector3d::UnitZ());
+   rotation = Eigen::AngleAxisd((double) angles.x(), Eigen::Vector3d::UnitX()) * Eigen::AngleAxisd((double) angles.y(), Eigen::Vector3d::UnitY()) *
+              Eigen::AngleAxisd((double) angles.z(), Eigen::Vector3d::UnitZ());
    this->matrix.setIdentity();
    this->matrix.block<3, 3>(0, 0) = rotation;
    this->matrix.block<3, 1>(0, 3) = translation;
@@ -57,7 +57,7 @@ void RigidBodyTransform::SetQuaternionAndTranslation(const Eigen::Quaterniond& o
    this->matrix.block<3, 1>(0, 3) = translation;
 }
 
-void RigidBodyTransform::setRotationAndTranslation(const Eigen::Matrix3d& rotation, const Eigen::Vector3d& translation)
+void RigidBodyTransform::SetAnglesAndTranslation(const Eigen::Matrix3d& rotation, const Eigen::Vector3d& translation)
 {
    this->matrix.setIdentity();
    this->matrix.block<3, 3>(0, 0) = rotation;

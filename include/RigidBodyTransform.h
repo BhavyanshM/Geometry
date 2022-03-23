@@ -28,7 +28,7 @@ class RigidBodyTransform
 
       void setToInverse();
 
-      RigidBodyTransform getInverse();
+      RigidBodyTransform GetInverse();
 
       const Eigen::Matrix4d& GetMatrix() const;
 
@@ -46,9 +46,9 @@ class RigidBodyTransform
 
       void print();
 
-      void setRotationAndTranslation(const Eigen::Matrix3d& rotation, const Eigen::Vector3d& translation);
+      void SetAnglesAndTranslation(const Eigen::Matrix3d& rotation, const Eigen::Vector3d& translation);
 
-      void setRotationAndTranslation(const Eigen::Vector3d& eulerAngles, const Eigen::Vector3d& translation);
+      void SetAnglesAndTranslation(const Eigen::Vector3d& rotation, const Eigen::Vector3d& translation);
 
       void SetQuaternionAndTranslation(const Eigen::Quaterniond& orientation, const Eigen::Vector3d& translation);
 
