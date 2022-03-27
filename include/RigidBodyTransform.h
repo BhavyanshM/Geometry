@@ -18,9 +18,11 @@ class RigidBodyTransform
    public:
       RigidBodyTransform();
 
-      RigidBodyTransform(Eigen::Matrix4d matrix);
+      RigidBodyTransform(const RigidBodyTransform& transform);
 
-      RigidBodyTransform(const RigidBodyTransform& other) : matrix(other.matrix){}
+      RigidBodyTransform(RigidBodyTransform&& transform);
+
+      RigidBodyTransform(Eigen::Matrix4d matrix);
 
       RigidBodyTransform(const Eigen::Matrix3d& rotation, const Eigen::Vector3d& translation);
 
@@ -36,7 +38,7 @@ class RigidBodyTransform
 
       void SetID(int id) {_id = id;};
 
-      void setMatrix(const Eigen::Matrix4d& matrix);
+      void SetMatrix(const Eigen::Matrix4d& matrix);
 
       void MultiplyLeft(const RigidBodyTransform& transform);
 

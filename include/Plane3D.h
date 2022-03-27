@@ -12,6 +12,8 @@
 class Plane3D
 {
    public:
+      Plane3D() = default;
+
       Plane3D(double x, double y, double z, double w);
 
       Plane3D(double x, double y, double z, double w, int id);
@@ -41,13 +43,20 @@ class Plane3D
 struct PlaneSet3D
 {
    private:
-      std::vector<Plane3D> planes;
+      std::unordered_map<int, Plane3D> planes;
       int poseId = 0;
    public:
       int GetID() const { return poseId;}
       void SetID(int id) { poseId = id;}
 
-      std::vector<Plane3D>& GetPlanes() { return planes;}
+      void InsertPlane(const Plane3D& plane, int id) {
+         if (planes.find(id) == planes.end())
+         {
+            planes[id] = plane;
+         }
+      } // Insert if not present.
+
+      const std::unordered_map<int, Plane3D>& GetPlanes() const { return planes;}
 
 };
 

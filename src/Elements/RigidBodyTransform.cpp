@@ -8,7 +8,20 @@
 
 RigidBodyTransform::RigidBodyTransform()
 {
+   printf("Constructor RBT\n");
    this->matrix = Eigen::Matrix4d::Identity();
+}
+
+RigidBodyTransform::RigidBodyTransform(const RigidBodyTransform& transform) : matrix(transform.matrix)
+{
+   printf("Copy Constructor RBT\n");
+   _id = transform.GetID();
+}
+
+RigidBodyTransform::RigidBodyTransform(RigidBodyTransform&& transform) : matrix(std::move(transform.matrix))
+{
+   printf("Move Constructor RBT\n");
+   _id = transform.GetID();
 }
 
 RigidBodyTransform::RigidBodyTransform(Eigen::Matrix4d mat)
@@ -69,7 +82,7 @@ const Eigen::Matrix4d& RigidBodyTransform::GetMatrix() const
    return matrix;
 }
 
-void RigidBodyTransform::setMatrix(const Eigen::Matrix4d& matrix)
+void RigidBodyTransform::SetMatrix(const Eigen::Matrix4d& matrix)
 {
    this->matrix = matrix;
 }
