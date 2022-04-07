@@ -243,14 +243,16 @@ void PlanarRegion::CopyAndTransform(std::shared_ptr<PlanarRegion>& planarRegionT
    planarRegionToPack->transform(transform);
 }
 
-void PlanarRegion::ProjectToPlane(Eigen::Vector4f plane)
+void PlanarRegion::ProjectToPlane(const Eigen::Vector4f& plane)
 {
+//   printf("Print Plane: %.2lf, %.2lf, %.2lf, %.2lf\n", plane.x(), plane.y(), plane.z(), plane.w());
+   printf("Region Center: %.2lf, %.2lf, %.2lf, %.2lf\n", center.x(), center.y(), center.z());
    this->normal = plane.block<3, 1>(0, 0);
-   this->center = GeomTools::GetProjectedPoint(plane, this->GetCenter());
-   for (int i = 0; i < GetNumOfBoundaryVertices(); i++)
-   {
-      this->boundaryVertices[i] = GeomTools::GetProjectedPoint(plane, this->boundaryVertices[i]);
-   }
+//   this->center = GeomTools::GetProjectedPoint(plane, this->center);
+//   for (int i = 0; i < GetNumOfBoundaryVertices(); i++)
+//   {
+//      this->boundaryVertices[i] = GeomTools::GetProjectedPoint(plane, this->boundaryVertices[i]);
+//   }
 }
 
 const std::string& PlanarRegion::toString()

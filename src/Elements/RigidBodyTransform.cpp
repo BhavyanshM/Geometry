@@ -3,24 +3,21 @@
 //
 
 #include "RigidBodyTransform.h"
-
 #include <utility>
+#include <iostream>
 
 RigidBodyTransform::RigidBodyTransform()
 {
-   printf("Constructor RBT\n");
    this->matrix = Eigen::Matrix4d::Identity();
 }
 
 RigidBodyTransform::RigidBodyTransform(const RigidBodyTransform& transform) : matrix(transform.matrix)
 {
-   printf("Copy Constructor RBT\n");
    _id = transform.GetID();
 }
 
 RigidBodyTransform::RigidBodyTransform(RigidBodyTransform&& transform) : matrix(std::move(transform.matrix))
 {
-   printf("Move Constructor RBT\n");
    _id = transform.GetID();
 }
 
@@ -104,7 +101,7 @@ Eigen::Vector3d RigidBodyTransform::transformVector(const Eigen::Vector3d& vecto
 
 void RigidBodyTransform::print()
 {
-//   std::cout << this->matrix << std::endl;
+   std::cout << matrix << std::endl;
 }
 
 Eigen::Vector3d RigidBodyTransform::GetTranslation()
