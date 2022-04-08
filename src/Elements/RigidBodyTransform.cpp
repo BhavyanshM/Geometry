@@ -107,17 +107,17 @@ void RigidBodyTransform::print()
 //   std::cout << this->matrix << std::endl;
 }
 
-Eigen::Vector3d RigidBodyTransform::GetTranslation()
+Eigen::Vector3d RigidBodyTransform::GetTranslation() const
 {
    return this->matrix.block<3, 1>(0, 3);
 }
 
-Eigen::Quaterniond RigidBodyTransform::GetQuaternion()
+Eigen::Quaterniond RigidBodyTransform::GetQuaternion() const
 {
    return Eigen::Quaterniond(this->matrix.block<3, 3>(0, 0));
 }
 
-Eigen::Matrix3d RigidBodyTransform::GetRotation()
+Eigen::Matrix3d RigidBodyTransform::GetRotation() const
 {
    return this->matrix.block<3, 3>(0, 0);
 }

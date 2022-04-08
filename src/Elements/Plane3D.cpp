@@ -31,7 +31,7 @@ std::string Plane3D::GetString()
    return formatter.str();
 }
 
-Plane3D Plane3D::GetTransformed(RigidBodyTransform& transform)
+Plane3D Plane3D::GetTransformed(const RigidBodyTransform& transform)
 {
    Eigen::Vector3d origin = (transform.GetRotation() * _origin + transform.GetTranslation());
    Eigen::Vector3d normal = (transform.GetRotation() * _normal);
