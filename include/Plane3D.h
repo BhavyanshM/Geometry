@@ -8,6 +8,7 @@
 #include "Eigen/Dense"
 #include "RigidBodyTransform.h"
 #include "vector"
+#include "unordered_map"
 
 class Plane3D
 {

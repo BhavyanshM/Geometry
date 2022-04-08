@@ -6,27 +6,15 @@
 #include "RigidBodyTransform.h"
 #include "KDTree.h"
 #include <memory>
+#include <unordered_map>
 
 class PlanarRegion
 {
-   private:
-      Eigen::Vector3f normal;
-      Eigen::Vector3f center;
-      std::vector<Eigen::Vector3f> patchCentroids;
-      std::vector<Eigen::Vector2f> planarPatchCentroids;
-      std::vector<Eigen::Vector2i> leafPatches;
-      std::vector<int> _segmentIndices;
-
-      RigidBodyTransform transformToWorldFrame;
-      KDTree tree;
-      bool normalCalculated = false;
-      bool centroidCalculated = false;
-      int numPatches;
-      int id;
-      int poseId = 0;
-      int numOfMeasurements = 1;
-
    public:
+      PlanarRegion() = default;
+
+      PlanarRegion(int id);
+
       std::vector<Eigen::Vector3f> boundaryVertices;
 
       void SubSampleBoundary(int skip);
@@ -54,8 +42,6 @@ class PlanarRegion
       Eigen::Vector3f getMeanCenter();
 
       Eigen::Vector3f GetMeanNormal();
-
-      PlanarRegion(int id);
 
       void AddPatch(Eigen::Vector3f normal, Eigen::Vector3f center);
 
@@ -101,7 +87,7 @@ class PlanarRegion
 
       const std::string& toString();
 
-      void ProjectToPlane(Eigen::Vector4f plane);
+      void ProjectToPlane(const Eigen::Vector4f& plane);
 
       void SetToUnitSquare();
 
@@ -118,6 +104,56 @@ class PlanarRegion
       const std::vector<int>& GetSegmentIndices() const {return _segmentIndices;}
 
       void CompressRegionSegmentsLinear(float compressDistThreshold, float compressCosineThreshold);
+
+   private:
+      Eigen::Vector3f normal;
+      Eigen::Vector3f center;
+      std::vector<Eigen::Vector3f> patchCentroids;
+      std::vector<Eigen::Vector2f> planarPatchCentroids;
+      std::vector<Eigen::Vector2i> leafPatches;
+      std::vector<int> _segmentIndices;
+
+      RigidBodyTransform transformToWorldFrame;
+      KDTree tree;
+      bool normalCalculated = false;
+      bool centroidCalculated = false;
+      int numPatches;
+      int id;
+      int poseId = 0;
+      int numOfMeasurements = 1;
+};
+
+struct PlanarRegionSet
+{
+   private:
+      std::unordered_map<int, int> _indexMap;
+      std::vector<std::shared_ptr<PlanarRegion>> _regions;
+      int poseId = 0;
+   public:
+      int GetID() const { return poseId;}
+      void SetID(int id) { poseId = id;}
+
+      void InsertRegion(std::shared_ptr<PlanarRegion>&& region, int id) {
+//         if (_indexMap.find(id) == _indexMap.end())
+         {
+            _regions.emplace_back(region);
+            _indexMap[region->getId()] = _regions.size() - 1;
+         }
+      } // Insert if not present.
+
+      std::unordered_map<int, int>& GetIndices() { return _indexMap;}
+
+      std::vector<std::shared_ptr<PlanarRegion>>& GetRegions() {return _regions;}
+
+      bool Exists(int key) {return _indexMap.find(key) != _indexMap.end(); }
+
+      void Print()
+      {
+         printf("\n\nPlanarRegionSet: %d\n", _regions.size());
+         for(auto region : _regions)
+            printf("%s\n", region->toString().c_str());
+      }
+
 };
 
 #endif //SRC_PLANARREGION_H
