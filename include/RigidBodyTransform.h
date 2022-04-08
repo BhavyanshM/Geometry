@@ -30,7 +30,7 @@ class RigidBodyTransform
 
       void setToInverse();
 
-      RigidBodyTransform GetInverse();
+      RigidBodyTransform GetInverse() const;
 
       const Eigen::Matrix4d& GetMatrix() const;
 

@@ -32,7 +32,7 @@ void RigidBodyTransform::setToInverse()
    this->matrix.block<3, 3>(0, 0) = this->matrix.block<3, 3>(0, 0).transpose();
 }
 
-RigidBodyTransform RigidBodyTransform::GetInverse()
+RigidBodyTransform RigidBodyTransform::GetInverse() const
 {
    RigidBodyTransform transformToPack;
    transformToPack.matrix.block<3, 3>(0, 0) = this->matrix.block<3, 3>(0, 0).transpose();
