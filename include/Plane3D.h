@@ -31,7 +31,7 @@ class Plane3D
 
       std::string GetString();
 
-      Plane3D GetTransformed(RigidBodyTransform& transform);
+      Plane3D GetTransformed(const RigidBodyTransform& transform);
 
    private:
       Eigen::Vector4d _params;
