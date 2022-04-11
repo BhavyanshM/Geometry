@@ -26,8 +26,8 @@ Plane3D::Plane3D(double px, double py, double pz, double nx, double ny, double n
 
 std::string Plane3D::GetString()
 {
-   boost::format formatter("Plane(%.3f,%.3f,%.3f,%.3f)");
-   formatter % _params.x() % _params.y() % _params.z() % _params.w();
+   boost::format formatter("Plane(%d) -> (%.3f,%.3f,%.3f,%.3f)");
+   formatter % _id % _params.x() % _params.y() % _params.z() % _params.w();
    return formatter.str();
 }
 
