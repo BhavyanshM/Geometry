@@ -28,7 +28,9 @@ class RigidBodyTransform
 
       RigidBodyTransform(const Eigen::Vector3d& eulerAngles, const Eigen::Vector3d& translation);
 
-      void setToInverse();
+      void SetToInverse();
+
+      void SetToIdentity();
 
       RigidBodyTransform GetInverse() const;
 
@@ -60,13 +62,13 @@ class RigidBodyTransform
 
       Eigen::Quaterniond GetQuaternion() const;
 
-      void rotateX(float angleRad);
+      void RotateX(float angleRad);
 
-      void rotateY(float angleRad);
+      void RotateY(float angleRad);
 
-      void rotateZ(float angleRad);
+      void RotateZ(float angleRad);
 
-      void rotate(float rad, Eigen::Vector3d axis);
+      void Rotate(float rad, Eigen::Vector3d axis);
 };
 
 #endif //RIGIDBODYTRANSFORM_H
