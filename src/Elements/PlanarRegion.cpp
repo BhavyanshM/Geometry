@@ -1,5 +1,5 @@
-#include "GeomTools.h"
 #include "PlanarRegion.h"
+#include "GeomTools.h"
 #include <cmath>
 #include <fstream>
 #include <boost/format.hpp>
@@ -291,7 +291,7 @@ void PlanarRegion::ComputeBoundaryVerticesPlanar()
    Eigen::Vector3f axis = -this->GetNormal().cross(Eigen::Vector3f(0, 0, 1)).normalized();
    Eigen::AngleAxisf angleAxis(angle, axis);
    Eigen::Matrix3d rotation = angleAxis.toRotationMatrix().cast<double>();
-   Eigen::Vector3d translation = Eigen::Vector3d(this->center.cast<double>());
+   Eigen::Vector3d translation = Eigen::Vector3d(GetCenter().cast<double>());
    transformToWorldFrame.SetAnglesAndTranslation(rotation, translation);
 
    for (int i = 0; i < boundaryVertices.size(); i++)

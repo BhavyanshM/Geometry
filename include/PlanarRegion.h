@@ -2,11 +2,13 @@
 #define SRC_PLANARREGION_H
 
 #include <Eigen/Dense>
-#include "RegionRing.h"
-#include "RigidBodyTransform.h"
-#include "KDTree.h"
 #include <memory>
 #include <unordered_map>
+
+#include "RegionRing.h"
+#include "RigidBodyTransform.h"
+
+
 
 class PlanarRegion
 {
@@ -114,7 +116,6 @@ class PlanarRegion
       std::vector<int> _segmentIndices;
 
       RigidBodyTransform transformToWorldFrame;
-      KDTree tree;
       bool normalCalculated = false;
       bool centroidCalculated = false;
       int numPatches;
