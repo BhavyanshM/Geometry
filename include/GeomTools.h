@@ -56,6 +56,8 @@ class GeomTools
       static void
       AppendMeasurementsToFile(const Eigen::Matrix4f odometry, const std::vector<std::pair<int, int>>& matches, const std::string& filename, int prevId,
                                int curId);
+
+      static const std::vector<Eigen::Vector2f>& CalculateIntersection(const std::vector<Eigen::Vector2f>& points1, const std::vector<Eigen::Vector2f>& points2);
 };
 
 #endif //GEOMTOOLS_H

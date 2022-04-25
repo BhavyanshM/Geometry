@@ -3,6 +3,7 @@ project(Geometry)
 
 set(Geometry_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include PARENT_SCOPE)
 
+find_package(Catch2 3 REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(Eigen3 3.4 REQUIRED NO_MODULE)
 
@@ -23,7 +24,11 @@ set(GEOMTOOLS_SRC
         include/PointLandmark.h
         include/RegionRing.h
         include/PlanarRegion.h
+        include/LineSegment2D.h
+        include/Line2D.h
 
+        src/Elements/Line2D.cpp
+        src/Elements/LineSegment2D.cpp
         src/Elements/CameraParams.cpp
         src/Optimizers/NonLinearOptimizer.cpp
         src/GeomTools.cpp
@@ -37,10 +42,14 @@ set(GEOMTOOLS_SRC
         src/Elements/Plane3D.cpp
         src/Elements/PointLandmark.cpp
         src/Elements/PlanarRegion.cpp
-        src/Elements/RegionRing.cpp)
+        src/Elements/RegionRing.cpp src/Elements/Line2D.cpp include/Line2D.h test/GeometryTests.cpp)
 
 add_library(geom-tools STATIC ${GEOMTOOLS_SRC})
 target_link_libraries(geom-tools PUBLIC
         Eigen3::Eigen
         ${OpenCV_LIBS})
 target_include_directories(geom-tools PUBLIC include/)
+
+add_executable(geom-tools-test test/GeometryTests.cpp)
+target_link_libraries(geom-tools-test PRIVATE Catch2::Catch2)
+

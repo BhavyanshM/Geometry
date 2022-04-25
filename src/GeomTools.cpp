@@ -378,7 +378,7 @@ void GeomTools::LoadRegions(int frameId, std::vector<std::shared_ptr<PlanarRegio
          region->insertBoundaryVertex(point);
       }
       //      GeomTools::CompressRegionSegmentsLinear(region);
-      regions.emplace_back(region);
+      regions.emplace_back(std::move(region));
    }
 }
 
@@ -448,6 +448,29 @@ bool GeomTools::CheckPatchConnection(const Eigen::Vector3f& ag, const Eigen::Vec
    }else {
       return false;
    }
+}
+
+const std::vector<Eigen::Vector2f>& GeomTools::CalculateIntersection(const std::vector<Eigen::Vector2f>& points1, const std::vector<Eigen::Vector2f>& points2)
+{
+   std::vector<Eigen::Vector2f> intersectionHull;
+   bool previousState = false;
+   bool currentState = false;
+   for(int i = 1; i<points2.size(); i++)
+   {
+      auto currentPoint = points2[i-1];
+      auto previousPoint = points2[i];
+
+
+
+      currentState = (windingNumber > 0.0);
+      if (previousState == false && currentState == true)
+      {
+
+      }
+   }
+
+   return intersectionHull;
+
 }
 
 
