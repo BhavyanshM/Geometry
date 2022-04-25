@@ -13,9 +13,9 @@ jobs:
       - uses: actions/checkout@v2
       - name: create directory
       run: mkdir build
-      -name: perform cmake
+      - name: perform cmake
       run: cmake ..
-      -name: perform make
+      - name: perform make
       run: make -j32
-      -name: launch tests
+      - name: launch tests
       run: ./geom-tools-test
