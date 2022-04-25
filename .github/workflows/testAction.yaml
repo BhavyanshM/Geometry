@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: create directory
-      run: mkdir build; cd build
+      run: mkdir build; cd build; ls
     - name: perform cmake
       run: cmake ..
     - name: perform make
