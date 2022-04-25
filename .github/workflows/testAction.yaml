@@ -18,6 +18,10 @@ jobs:
       with:
         submodules: true
 
+    - name: Install Packages
+      run: |
+        sudo apt-get install libboost-all-dev
+
     - name: Install OpenCV
       run: sudo apt-get install libopencv-dev
 
