@@ -10,5 +10,5 @@ const Eigen::Vector2f& LineSegment2D::IntersectWith(const LineSegment2D& segment
 
 
 
-   return <#initializer#>;
+   return intersection;
 }

@@ -1,5 +1,7 @@
 #include "PlanarRegion.h"
 #include "GeomTools.h"
+#include "HullTools.h"
+#include "LineTools.h"
 #include <cmath>
 #include <fstream>
 #include <boost/format.hpp>
@@ -315,17 +317,17 @@ void PlanarRegion::ComputeBoundaryVertices3D(std::vector<Eigen::Vector2f> points
 void PlanarRegion::RetainConvexHull()
 {
    ComputeBoundaryVerticesPlanar();
-   std::vector<Eigen::Vector2f> convexHull = GeomTools::GrahamScanConvexHull(this->planarPatchCentroids);
+   std::vector<Eigen::Vector2f> convexHull = HullTools::GrahamScanConvexHull(this->planarPatchCentroids);
    ComputeBoundaryVertices3D(convexHull);
 }
 
 void PlanarRegion::RetainLinearApproximation()
 {
    ComputeBoundaryVerticesPlanar();
-   std::vector<Eigen::Vector2f> concaveHull = GeomTools::CanvasApproximateConcaveHull(this->planarPatchCentroids, 640, 480);
+   std::vector<Eigen::Vector2f> concaveHull = HullTools::CanvasApproximateConcaveHull(this->planarPatchCentroids, 640, 480);
    Eigen::MatrixXf parametricCurve(2, 14);
 
-   GeomTools::GetParametricCurve(concaveHull, 13, parametricCurve);
+   HullTools::GetParametricCurve(concaveHull, 13, parametricCurve);
    ComputeBoundaryVertices3D(concaveHull);
 
 }
@@ -389,9 +391,9 @@ void PlanarRegion::CompressRegionSegmentsLinear(float compressDistThreshold, flo
          Eigen::Vector2f startPoint = planarPatchCentroids[start];
          Eigen::Vector2f endPoint = planarPatchCentroids[end];
          Eigen::Vector2f nextPoint = planarPatchCentroids[end+1];
-         Eigen::Vector3f line = GeomTools::GetLineFromTwoPoints2D(startPoint, endPoint);
+         Eigen::Vector3f line = LineTools::GetLineFromTwoPoints2D(startPoint, endPoint);
          float cosim = GeomTools::GetCosineSimilarity2D(endPoint - startPoint, nextPoint - endPoint);
-         float dist = GeomTools::GetDistanceFromLine2D(line, planarPatchCentroids[end + 1]);
+         float dist = LineTools::GetDistanceFromLine2D(line, planarPatchCentroids[end + 1]);
          if (dist > compressDistThreshold && cosim < compressCosineThreshold)
          {
             reducedBoundary.emplace_back(planarPatchCentroids[end]);

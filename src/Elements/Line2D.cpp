@@ -10,7 +10,8 @@ Line2D::Line2D(const Eigen::Vector2f& point, float slope)
    _data(0) = -slope;
    _data(1) = 1;
    _data(2) = c;
-   _data /= _data(2);
+
+   printf("Called: (%.2lf, %.2lf, %.2lf)\n", _data.x(), _data.y(), _data.z());
 }
 
 Line2D::Line2D(float slope, float intercept)
@@ -18,7 +19,6 @@ Line2D::Line2D(float slope, float intercept)
    _data(0) = -slope;
    _data(1) = 1;
    _data(2) = intercept;
-   _data /= _data(2);
 }
 
 Line2D::Line2D(const Eigen::Vector2f& point1, const Eigen::Vector2f& point2)
@@ -28,17 +28,6 @@ Line2D::Line2D(const Eigen::Vector2f& point1, const Eigen::Vector2f& point2)
    _data(0) = -slope;
    _data(1) = 1;
    _data(2) = c;
-   _data /= _data(2);
 }
 
-const Eigen::Vector2f& Line2D::IntersectWith(const Line2D& line)
-{
-   /* x = (b1c2 - b2c1)/(a1b2 - a2b1)
-    * y = (a1c2 - a2c1)/(a2b1 - a1b2)
-    * */
 
-   Eigen::Vector2f intersection;
-   intersection.x() = (_data(1) * line(2) - line(1) * _data(2)) / (_data(0) * line(1) - line(0) * _data(1));
-   intersection.y() = (_data(0) * line(2) - line(0) * _data(2)) / (line(0) * _data(1) - _data(0) * line(1));
-   return std::move(intersection);
-}

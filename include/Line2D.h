@@ -21,9 +21,9 @@ class Line2D
       Line2D(const Eigen::Vector2f& point, float slope);
       Line2D(float slope, float intercept);
 
-      const Eigen::Vector2f& IntersectWith(const Line2D& line);
+      Eigen::Vector2f IntersectWith(const Line2D& line);
 
-      const Eigen::Vector3f& GetData() const { return _data;}
+      Eigen::Vector3f GetData() const { return _data;}
 
       float& operator()(int i) { return _data(i);}
       float operator()(int i) const { return _data(i);}

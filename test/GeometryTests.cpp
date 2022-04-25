@@ -5,15 +5,18 @@
 #include <catch2/catch_test_macros.hpp>
 #include "catch2/catch_session.hpp"
 
-unsigned int Factorial( unsigned int number ) {
-   return number <= 1 ? number : Factorial(number-1)*number;
-}
+#include "Line2D.h"
 
-TEST_CASE( "Factorials are computed", "[factorial]" ) {
-   REQUIRE( Factorial(1) == 1 );
-   REQUIRE( Factorial(2) == 2 );
-   REQUIRE( Factorial(3) == 6 );
-   REQUIRE( Factorial(10) == 3628800 );
+#include "iostream"
+
+TEST_CASE( "Line2D Functions", "[Line2D]" ) {
+
+   Line2D line({0,0}, 1);
+   Line2D other({0,0}, 2);
+
+   auto point = line.IntersectWith(other);
+   REQUIRE( (point.x() == 0 && point.y() == 0));
+
 }
 
 int main(int argc, char** argv)

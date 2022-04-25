@@ -5,7 +5,7 @@
 #ifndef LINESEGMENT2D_H
 #define LINESEGMENT2D_H
 
-#include "Eigen/Dense"
+#include "Eigen/Core"
 
 class LineSegment2D
 {

@@ -26,7 +26,11 @@ set(GEOMTOOLS_SRC
         include/PlanarRegion.h
         include/LineSegment2D.h
         include/Line2D.h
+        include/HullTools.h
+        include/LineTools.h
 
+        src/HullTools.cpp
+        src/LineTools.cpp
         src/Elements/Line2D.cpp
         src/Elements/LineSegment2D.cpp
         src/Elements/CameraParams.cpp
@@ -44,12 +48,16 @@ set(GEOMTOOLS_SRC
         src/Elements/PlanarRegion.cpp
         src/Elements/RegionRing.cpp src/Elements/Line2D.cpp include/Line2D.h test/GeometryTests.cpp)
 
-add_library(geom-tools STATIC ${GEOMTOOLS_SRC})
+add_library(geom-tools STATIC ${GEOMTOOLS_SRC} src/HullTools.cpp include/HullTools.h src/LineTools.cpp include/LineTools.h)
 target_link_libraries(geom-tools PUBLIC
         Eigen3::Eigen
         ${OpenCV_LIBS})
 target_include_directories(geom-tools PUBLIC include/)
 
-add_executable(geom-tools-test test/GeometryTests.cpp)
-target_link_libraries(geom-tools-test PRIVATE Catch2::Catch2)
+add_executable(geom-tools-test test/GeometryTests.cpp
+        ${GEOMTOOLS_SRC})
+target_link_libraries(geom-tools-test PRIVATE
+        Catch2::Catch2
+        geom-tools)
+target_include_directories(geom-tools-test PUBLIC include/)
 
