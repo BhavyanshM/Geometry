@@ -15,6 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+      with:
+        submodules: true
 
     - name: Install OpenCV
       run: sudo apt-get install libopencv-dev
