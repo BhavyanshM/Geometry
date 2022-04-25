@@ -1,0 +1,21 @@
+name: C/C++ CI
+
+on:
+  push:
+      branches: [ master ]
+  pull_request:
+      branches: [ master ]
+
+jobs:
+  build-and-test:
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v2
+      - name: create directory
+      run: mkdir build
+      -name: perform cmake
+      run: cmake ..
+      -name: perform make
+      run: make -j32
+      -name: launch tests
+      run: ./geom-tools-test

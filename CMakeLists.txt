@@ -3,10 +3,11 @@ project(Geometry)
 
 set(Geometry_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include PARENT_SCOPE)
 
-find_package(Catch2 3 REQUIRED)
+
 find_package(OpenCV REQUIRED)
 find_package(Eigen3 3.4 REQUIRED NO_MODULE)
 
+add_subdirectory(lib/Catch2/)
 
 
 set(GEOMTOOLS_SRC
