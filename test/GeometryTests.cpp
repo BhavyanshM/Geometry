@@ -25,7 +25,7 @@ TEST_CASE("HullTools Functions", "[HullTools]")
    REQUIRE(HullTools::ComputeBoundingBoxIoU({{-1,-1},{1,1}}, {{0.0,0.0},{1.0,1.0}}) == Approx(0.25).epsilon(1e-5) );
    REQUIRE(HullTools::ComputeBoundingBoxIoU({{-1,-1},{1,1}}, {{-1,-1},{1,1}}) == Approx(1.0).epsilon(1e-5) );
    REQUIRE(HullTools::ComputeBoundingBoxIoU({{-1,-1},{1,1}}, {{2,2},{4,4}}) == Approx(0.0).epsilon(1e-5) );
-   REQUIRE(HullTools::ComputeBoundingBoxIoU({{-1,-1},{0,0}}, {{0,0},{1,1}}) == Approx(0.1).epsilon(1e-5) );
+   REQUIRE(HullTools::ComputeBoundingBoxIoU({{-1,-1},{0,0}}, {{0,0},{1,1}}) == Approx(0.0).epsilon(1e-5) );
 }
 
 int main(int argc, char** argv)
