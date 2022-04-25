@@ -14,17 +14,10 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
     - name: Install OpenCV
       run: sudo apt-get install libopencv-dev
     - name: Install Eigen 3.4
-      run: |
-        wget https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.bz2
-        tar -xvf eigen*.bz2
-        cd eigen-3.4.0
-        mkdir build
-        cmake ..
-        sudo make install
+      run: pwd
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
