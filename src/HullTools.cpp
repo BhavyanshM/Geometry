@@ -28,6 +28,40 @@ std::vector<Eigen::Vector2f> HullTools::CalculateIntersection(const std::vector<
 
 }
 
+BoundingBox HullTools::GetBoundingBox(const std::vector<Eigen::Vector2f>& points)
+{
+   float minX = MAXFLOAT;
+   float minY = MAXFLOAT;
+   float maxX = -MAXFLOAT;
+   float maxY = -MAXFLOAT;
+
+   for(auto point : points)
+   {
+      if(point.x() < minX) minX = point.x();
+      if(point.y() < minY) minY = point.y();
+      if(point.x() > maxX) maxX = point.x();
+      if(point.y() > maxY) maxY = point.y();
+
+   }
+
+   return {{minX, minY}, {maxX, maxY}};
+}
+
+float HullTools::ComputeBoundingBoxIoU(const BoundingBox& box1, const BoundingBox& box2)
+{
+   float intersectionMinX = fmax(box1.GetMinX(), box2.GetMinX());
+   float intersectionMinY = fmax(box1.GetMinY(), box2.GetMinY());
+   float intersectionMaxX = fmin(box1.GetMaxX(), box2.GetMaxX());
+   float intersectionMaxY = fmin(box1.GetMaxY(), box2.GetMaxY());
+   float intersectionArea = 0;
+   if(intersectionMinX < intersectionMaxX && intersectionMinY < intersectionMaxY)
+   {
+      intersectionArea = (intersectionMaxX - intersectionMinX) * (intersectionMaxY - intersectionMinY);
+   }
+   float unionArea = box1.GetArea() + box2.GetArea() - intersectionArea;
+   return intersectionArea / unionArea;
+}
+
 bool HullTools::CheckPointInside(const std::vector<Eigen::Vector2f>& hull, const Eigen::Vector2f& point)
 {
    return (ComputeWindingNumber(hull, point) > 0);

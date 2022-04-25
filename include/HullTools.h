@@ -12,6 +12,42 @@
 
 typedef Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic> BoolDynamicMatrix;
 
+struct BoundingBox
+{
+   public:
+      BoundingBox(const Eigen::Vector2f& p1, const Eigen::Vector2f& p2)
+      {
+         sizeX = fabs(p2.x() - p1.x());
+         sizeY = fabs(p2.y()- p1.y());
+         cx = (p1.x() + p2.x()) / 2.0f;
+         cy = (p1.y() + p2.y()) / 2.0f;
+      }
+
+      BoundingBox(float cx, float cy, float lx, float ly)
+      {
+         sizeX = lx;
+         sizeY = ly;
+         this->cx = cx;
+         this->cy = cy;
+      }
+
+      float GetSizeX() const { return sizeX;}
+      float GetSizeY() const { return sizeY;}
+      float GetCenterX() const { return cx;}
+      float GetCenterY() const { return cy;}
+      float GetMinX() const { return fmin(cx - sizeX/2.0f,cx + sizeX/2.0f);}
+      float GetMaxX() const { return fmax(cx - sizeX/2.0f,cx + sizeX/2.0f);}
+      float GetMinY() const { return fmin(cy - sizeY/2.0f,cy + sizeY/2.0f);}
+      float GetMaxY() const { return fmax(cy - sizeY/2.0f,cy + sizeY/2.0f);}
+      float GetArea() const { return fabs(sizeX * sizeY);}
+
+   private:
+      float cx = 0;
+      float cy = 0;
+      float sizeX = 0;
+      float sizeY = 0;
+};
+
 class HullTools
 {
    public:
@@ -30,6 +66,10 @@ class HullTools
       static std::vector<Eigen::Vector2f> GrahamScanConvexHull(std::vector<Eigen::Vector2f> points);
 
       static std::vector<Eigen::Vector2f> CanvasApproximateConcaveHull(std::vector<Eigen::Vector2f> points, uint16_t windowHeight, uint16_t windowWidth);
+
+      static BoundingBox GetBoundingBox(const std::vector<Eigen::Vector2f>& points);
+
+      static float ComputeBoundingBoxIoU(const BoundingBox& box1, const BoundingBox& box2);
 };
 
 #endif //MAP_SENSE_HULLTOOLS_H
