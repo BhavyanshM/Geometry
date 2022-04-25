@@ -10,8 +10,6 @@ Line2D::Line2D(const Eigen::Vector2f& point, float slope)
    _data(0) = -slope;
    _data(1) = 1;
    _data(2) = c;
-
-   printf("Called: (%.2lf, %.2lf, %.2lf)\n", _data.x(), _data.y(), _data.z());
 }
 
 Line2D::Line2D(float slope, float intercept)

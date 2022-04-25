@@ -9,6 +9,7 @@
 #include "Line2D.h"
 #include "HullTools.h"
 
+
 #include "iostream"
 
 using namespace Catch;
@@ -26,6 +27,23 @@ TEST_CASE("HullTools Functions", "[HullTools]")
    REQUIRE(HullTools::ComputeBoundingBoxIoU({{-1,-1},{1,1}}, {{-1,-1},{1,1}}) == Approx(1.0).epsilon(1e-5) );
    REQUIRE(HullTools::ComputeBoundingBoxIoU({{-1,-1},{1,1}}, {{2,2},{4,4}}) == Approx(0.0).epsilon(1e-5) );
    REQUIRE(HullTools::ComputeBoundingBoxIoU({{-1,-1},{0,0}}, {{0,0},{1,1}}) == Approx(0.0).epsilon(1e-5) );
+
+   std::vector<Eigen::Vector2f> hull;
+   hull.emplace_back(0.25f, 0.1f);
+   hull.emplace_back(-0.25, 0.1);
+   hull.emplace_back(0.0, 0.6);
+
+   std::vector<Eigen::Vector2f> hull2;
+   hull2.emplace_back(0.0f, 0.35f);
+   hull2.emplace_back(0.0f, 0.85f);
+   hull2.emplace_back(0.5f, 0.35f);
+
+   auto box = HullTools::GetBoundingBox(hull);
+   auto box2 = HullTools::GetBoundingBox(hull2);
+
+   REQUIRE(HullTools::ComputeBoundingBoxIoU(box, box2) == Approx(1.0f/7.0f).epsilon(1e-5));
+
+
 }
 
 int main(int argc, char** argv)

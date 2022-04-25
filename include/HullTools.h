@@ -31,6 +31,11 @@ struct BoundingBox
          this->cy = cy;
       }
 
+      void Print() const
+      {
+         printf("Box: cx:%.2lf, cy:%.2lf, size_x:%.2lf, size_y:%.2lf\n", cx, cy, sizeX, sizeY);
+      }
+
       float GetSizeX() const { return sizeX;}
       float GetSizeY() const { return sizeY;}
       float GetCenterX() const { return cx;}
@@ -40,6 +45,7 @@ struct BoundingBox
       float GetMinY() const { return fmin(cy - sizeY/2.0f,cy + sizeY/2.0f);}
       float GetMaxY() const { return fmax(cy - sizeY/2.0f,cy + sizeY/2.0f);}
       float GetArea() const { return fabs(sizeX * sizeY);}
+
 
    private:
       float cx = 0;
