@@ -19,7 +19,7 @@ jobs:
       run: |
         wget https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.bz2
         tar -xvf eigen*.bz2
-        cd eigen*
+        cd eigen-3.4.0
         mkdir build
         cmake ..
         sudo make install
