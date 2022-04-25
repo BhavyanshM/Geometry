@@ -15,6 +15,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Install Eigen 3.4
+      run: |
+        wget https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.bz2
+        tar -xvf eigen*.bz2
+        cd eigen*
+        mkdir build
+        cmake ..
+        sudo make install
     - name: Install OpenCV
       run: sudo apt-get install libopencv-dev
     - name: Configure CMake
