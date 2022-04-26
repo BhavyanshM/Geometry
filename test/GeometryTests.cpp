@@ -6,6 +6,7 @@
 #include "catch2/catch_session.hpp"
 #include "catch2/catch_approx.hpp"
 
+#include "TrajectoryOptimizer.h"
 #include "Line2D.h"
 #include "HullTools.h"
 
@@ -41,6 +42,33 @@ TEST_CASE("HullTools Functions", "[HullTools]")
    REQUIRE(HullTools::ComputeBoundingBoxIoU({hull}, {hull2}) == Approx(1.0f/7.0f).epsilon(1e-5));
 
 
+}
+
+TEST_CASE("Trajectory Optimization", "[TrajectoryOptimizer]")
+{
+   TrajectoryOptimizer traj(0, 1, 0, 0, 1, -1);
+   traj.Optimize();
+   int totalSamples = 300;
+   float timeUnit = 1.0f/(float) totalSamples;
+
+   for(int i = 0; i<totalSamples; i++)
+   {
+      if(i<totalSamples/2) REQUIRE(traj.GetRate(timeUnit * (float)i) > 0.0f);
+      if(i>totalSamples/2) REQUIRE(traj.GetRate(timeUnit * (float)i) < 0.0f);
+   }
+
+   REQUIRE(traj.GetRate(0.5) == Approx(0.0f).margin(1e-5));
+
+   TrajectoryOptimizer traj1(0, 1, 0, 0, -1, 1);
+   traj1.Optimize();
+
+   for(int i = 0; i<totalSamples; i++)
+   {
+      if(i<totalSamples/2) REQUIRE(traj1.GetRate(timeUnit * (float)i) < 0.0f);
+      if(i>totalSamples/2) REQUIRE(traj1.GetRate(timeUnit * (float)i) > 0.0f);
+   }
+
+   REQUIRE(traj1.GetRate(0.5) == Approx(0.0f).margin(1e-5));
 }
 
 int main(int argc, char** argv)
