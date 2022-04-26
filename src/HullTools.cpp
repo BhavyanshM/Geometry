@@ -28,23 +28,22 @@ std::vector<Eigen::Vector2f> HullTools::CalculateIntersection(const std::vector<
 
 }
 
-BoundingBox HullTools::GetBoundingBox(const std::vector<Eigen::Vector2f>& points)
+std::vector<Eigen::Vector2f> HullTools::CalculateUnion(const std::vector<Eigen::Vector2f>& hull1, const std::vector<Eigen::Vector2f>& hull2)
 {
-   float minX = MAXFLOAT;
-   float minY = MAXFLOAT;
-   float maxX = -MAXFLOAT;
-   float maxY = -MAXFLOAT;
-
-   for(auto point : points)
+   std::vector<Eigen::Vector2f> unionHull;
+   for(int i = 0; i < hull2.size(); i++)
    {
-      if(point.x() < minX) minX = point.x();
-      if(point.y() < minY) minY = point.y();
-      if(point.x() > maxX) maxX = point.x();
-      if(point.y() > maxY) maxY = point.y();
-
+      if (!CheckPointInside(hull1, hull2[i]))
+         unionHull.emplace_back(hull2[i]);
    }
 
-   return {{minX, minY}, {maxX, maxY}};
+   for(int i = 0; i < hull1.size(); i++)
+   {
+      if (!CheckPointInside(hull2, hull1[i]))
+         unionHull.emplace_back(hull1[i]);
+   }
+
+   return unionHull;
 }
 
 float HullTools::ComputeBoundingBoxIoU(const BoundingBox& box1, const BoundingBox& box2)
@@ -64,7 +63,7 @@ float HullTools::ComputeBoundingBoxIoU(const BoundingBox& box1, const BoundingBo
 
 bool HullTools::CheckPointInside(const std::vector<Eigen::Vector2f>& hull, const Eigen::Vector2f& point)
 {
-   return (ComputeWindingNumber(hull, point) > 0);
+   return (fabs(ComputeWindingNumber(hull, point)) > 2.0f);
 }
 
 void printHull(std::stack<int> convexHull, std::vector<Eigen::Vector2f> points)

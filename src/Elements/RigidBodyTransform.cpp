@@ -99,7 +99,7 @@ void RigidBodyTransform::MultiplyRight(const RigidBodyTransform& transform)
    matrix = matrix * transform.matrix;
 }
 
-Eigen::Vector3d RigidBodyTransform::transformVector(const Eigen::Vector3d& vector)
+Eigen::Vector3d RigidBodyTransform::TransformVector(const Eigen::Vector3d& vector)
 {
    return matrix.block<3, 3>(0, 0) * vector + matrix.block<3, 1>(0, 3);
 }

@@ -46,7 +46,7 @@ class RigidBodyTransform
 
       void MultiplyRight(const RigidBodyTransform& transform);
 
-      Eigen::Vector3d transformVector(const Eigen::Vector3d& vector);
+      Eigen::Vector3d TransformVector(const Eigen::Vector3d& vector);
 
       void print();
 

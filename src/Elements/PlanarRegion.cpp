@@ -247,14 +247,12 @@ void PlanarRegion::CopyAndTransform(std::shared_ptr<PlanarRegion>& planarRegionT
 
 void PlanarRegion::ProjectToPlane(const Eigen::Vector4f& plane)
 {
-//   printf("Print Plane: %.2lf, %.2lf, %.2lf, %.2lf\n", plane.x(), plane.y(), plane.z(), plane.w());
-   printf("Region Center: %.2lf, %.2lf, %.2lf, %.2lf\n", center.x(), center.y(), center.z());
    this->normal = plane.block<3, 1>(0, 0);
-//   this->center = GeomTools::GetProjectedPoint(plane, this->center);
-//   for (int i = 0; i < GetNumOfBoundaryVertices(); i++)
-//   {
-//      this->boundaryVertices[i] = GeomTools::GetProjectedPoint(plane, this->boundaryVertices[i]);
-//   }
+   this->center = GeomTools::GetProjectedPoint(plane, this->center);
+   for (int i = 0; i < GetNumOfBoundaryVertices(); i++)
+   {
+      this->boundaryVertices[i] = GeomTools::GetProjectedPoint(plane, this->boundaryVertices[i]);
+   }
 }
 
 const std::string& PlanarRegion::toString()
@@ -287,19 +285,19 @@ void PlanarRegion::SetNumOfMeasurements(int numOfMeasurements)
 
 void PlanarRegion::ComputeBoundaryVerticesPlanar()
 {
-   planarPatchCentroids.clear();
+   boundaryVerticesPlanar.clear();
 
    float angle = acos(this->GetNormal().dot(Eigen::Vector3f(0, 0, 1)));
    Eigen::Vector3f axis = -this->GetNormal().cross(Eigen::Vector3f(0, 0, 1)).normalized();
    Eigen::AngleAxisf angleAxis(angle, axis);
    Eigen::Matrix3d rotation = angleAxis.toRotationMatrix().cast<double>();
    Eigen::Vector3d translation = Eigen::Vector3d(GetCenter().cast<double>());
-   transformToWorldFrame.SetAnglesAndTranslation(rotation, translation);
+   transformToWorldFrame.SetAnglesAndTranslation(rotation, {0,0,0});
 
    for (int i = 0; i < boundaryVertices.size(); i++)
    {
-      Eigen::Vector3f localPoint = transformToWorldFrame.GetInverse().transformVector(boundaryVertices[i].cast<double>()).cast<float>();
-      this->planarPatchCentroids.emplace_back(Eigen::Vector2f(localPoint.x(), localPoint.y()));
+      Eigen::Vector3f localPoint = transformToWorldFrame.GetInverse().TransformVector(boundaryVertices[i].cast<double>()).cast<float>();
+      this->boundaryVerticesPlanar.emplace_back(Eigen::Vector2f(localPoint.x(), localPoint.y()));
    }
 }
 
@@ -308,7 +306,7 @@ void PlanarRegion::ComputeBoundaryVertices3D(std::vector<Eigen::Vector2f> points
    std::vector<Eigen::Vector3f> points3D;
    for (int i = 0; i < points2D.size(); i++)
    {
-      points3D.emplace_back(transformToWorldFrame.transformVector(Eigen::Vector3d((double) points2D[i].x(), (double) points2D[i].y(), 0)).cast<float>());
+      points3D.emplace_back(transformToWorldFrame.TransformVector(Eigen::Vector3d((double) points2D[i].x(), (double) points2D[i].y(), 0)).cast<float>());
    }
    this->boundaryVertices.clear();
    this->boundaryVertices = points3D;
@@ -317,14 +315,14 @@ void PlanarRegion::ComputeBoundaryVertices3D(std::vector<Eigen::Vector2f> points
 void PlanarRegion::RetainConvexHull()
 {
    ComputeBoundaryVerticesPlanar();
-   std::vector<Eigen::Vector2f> convexHull = HullTools::GrahamScanConvexHull(this->planarPatchCentroids);
+   std::vector<Eigen::Vector2f> convexHull = HullTools::GrahamScanConvexHull(this->boundaryVerticesPlanar);
    ComputeBoundaryVertices3D(convexHull);
 }
 
 void PlanarRegion::RetainLinearApproximation()
 {
    ComputeBoundaryVerticesPlanar();
-   std::vector<Eigen::Vector2f> concaveHull = HullTools::CanvasApproximateConcaveHull(this->planarPatchCentroids, 640, 480);
+   std::vector<Eigen::Vector2f> concaveHull = HullTools::CanvasApproximateConcaveHull(this->boundaryVerticesPlanar, 640, 480);
    Eigen::MatrixXf parametricCurve(2, 14);
 
    HullTools::GetParametricCurve(concaveHull, 13, parametricCurve);
@@ -362,10 +360,10 @@ void PlanarRegion::ComputeSegmentIndices(float distThreshold)
 {
    _segmentIndices.clear();
    this->_segmentIndices.push_back(0);
-   for (int i = 0; i < this->planarPatchCentroids.size() - 1; i++)
+   for (int i = 0; i < this->boundaryVerticesPlanar.size() - 1; i++)
    {
-      Eigen::Vector2f point = planarPatchCentroids[i];
-      Eigen::Vector2f nextPoint = planarPatchCentroids[i + 1];
+      Eigen::Vector2f point = boundaryVerticesPlanar[i];
+      Eigen::Vector2f nextPoint = boundaryVerticesPlanar[i + 1];
       float dist = (point - nextPoint).norm();
       if (dist < distThreshold)
       {
@@ -384,30 +382,30 @@ void PlanarRegion::CompressRegionSegmentsLinear(float compressDistThreshold, flo
 
    uint16_t start = 0;
    uint16_t end = 1;
-   for (uint16_t i = 0; i < planarPatchCentroids.size() - 2; i++)
+   for (uint16_t i = 0; i < boundaryVerticesPlanar.size() - 2; i++)
    {
       if (_segmentIndices[end] == _segmentIndices[end + 1])
       {
-         Eigen::Vector2f startPoint = planarPatchCentroids[start];
-         Eigen::Vector2f endPoint = planarPatchCentroids[end];
-         Eigen::Vector2f nextPoint = planarPatchCentroids[end+1];
+         Eigen::Vector2f startPoint = boundaryVerticesPlanar[start];
+         Eigen::Vector2f endPoint = boundaryVerticesPlanar[end];
+         Eigen::Vector2f nextPoint = boundaryVerticesPlanar[end + 1];
          Eigen::Vector3f line = LineTools::GetLineFromTwoPoints2D(startPoint, endPoint);
          float cosim = GeomTools::GetCosineSimilarity2D(endPoint - startPoint, nextPoint - endPoint);
-         float dist = LineTools::GetDistanceFromLine2D(line, planarPatchCentroids[end + 1]);
+         float dist = LineTools::GetDistanceFromLine2D(line, boundaryVerticesPlanar[end + 1]);
          if (dist > compressDistThreshold && cosim < compressCosineThreshold)
          {
-            reducedBoundary.emplace_back(planarPatchCentroids[end]);
+            reducedBoundary.emplace_back(boundaryVerticesPlanar[end]);
             reducedSegments.emplace_back(_segmentIndices[end]);
             start = end;
          }
       } else
       {
-         reducedBoundary.emplace_back(planarPatchCentroids[end]);
+         reducedBoundary.emplace_back(boundaryVerticesPlanar[end]);
          reducedSegments.emplace_back(_segmentIndices[end]);
          start = end;
       }
       end++;
    }
-   planarPatchCentroids = reducedBoundary;
+   boundaryVerticesPlanar = reducedBoundary;
    _segmentIndices = reducedSegments;
 }

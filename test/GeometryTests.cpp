@@ -38,10 +38,7 @@ TEST_CASE("HullTools Functions", "[HullTools]")
    hull2.emplace_back(0.0f, 0.85f);
    hull2.emplace_back(0.5f, 0.35f);
 
-   auto box = HullTools::GetBoundingBox(hull);
-   auto box2 = HullTools::GetBoundingBox(hull2);
-
-   REQUIRE(HullTools::ComputeBoundingBoxIoU(box, box2) == Approx(1.0f/7.0f).epsilon(1e-5));
+   REQUIRE(HullTools::ComputeBoundingBoxIoU({hull}, {hull2}) == Approx(1.0f/7.0f).epsilon(1e-5));
 
 
 }

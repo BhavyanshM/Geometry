@@ -97,9 +97,9 @@ class PlanarRegion
 
       static void SetZeroId( std::vector<std::shared_ptr<PlanarRegion>>& regionList);
 
-      const std::vector<Eigen::Vector2f>& GetPlanarPatchCentroids() const {return planarPatchCentroids;}
+      const std::vector<Eigen::Vector2f>& GetPlanarPatchCentroids() const {return boundaryVerticesPlanar;}
 
-      void SetPlanarPatchCentroids(std::vector<Eigen::Vector2f> points) { planarPatchCentroids = points;}
+      void SetPlanarPatchCentroids(std::vector<Eigen::Vector2f> points) { boundaryVerticesPlanar = points;}
 
       void SetSegmentIndices(std::vector<int> indices) { _segmentIndices = indices;}
 
@@ -107,11 +107,17 @@ class PlanarRegion
 
       void CompressRegionSegmentsLinear(float compressDistThreshold, float compressCosineThreshold);
 
+      Eigen::Vector4f GetPlane() {
+         Eigen::Vector4f plane;
+         plane << GetNormal(), -GetNormal().dot(GetCenter());
+         return plane;
+      }
+
    private:
       Eigen::Vector3f normal;
       Eigen::Vector3f center;
       std::vector<Eigen::Vector3f> patchCentroids;
-      std::vector<Eigen::Vector2f> planarPatchCentroids;
+      std::vector<Eigen::Vector2f> boundaryVerticesPlanar;
       std::vector<Eigen::Vector2i> leafPatches;
       std::vector<int> _segmentIndices;
 
