@@ -25,6 +25,8 @@ class GeomTools
 
       static void LoadRegions(int frameId, std::vector<std::shared_ptr<PlanarRegion>>& regions, std::string directory, std::vector<std::string> files);
 
+      static void LoadRegions(const std::string& file, std::vector<std::shared_ptr<PlanarRegion>>& regions, bool erase = false);
+
       static void SaveRegions(std::vector<std::shared_ptr<PlanarRegion>> regions, std::string fileName);
 
       static void TransformRegions(std::vector<std::shared_ptr<PlanarRegion>>& regions, RigidBodyTransform transform);

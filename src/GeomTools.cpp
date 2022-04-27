@@ -91,8 +91,16 @@ void GeomTools::LoadRegions(int frameId, std::vector<std::shared_ptr<PlanarRegio
 {
    /* Generate planar region objects from the sorted list of files. */
    //   if(regions.size() > 0) regions.clear();
-   std::ifstream regionFile(directory + files[frameId]);
-   std::cout << "Loading Regions From: " << directory + files[frameId] << " FrameID:" << frameId << std::endl;
+
+   std::string filePath = directory + files[frameId];
+   LoadRegions(filePath, regions);
+}
+
+void GeomTools::LoadRegions(const std::string& file, std::vector<std::shared_ptr<PlanarRegion>>& regions, bool erase)
+{
+   if(erase) regions.clear();
+   std::ifstream regionFile(file);
+   std::cout << "Loading Regions From: " << file;
    std::vector<std::string> subStrings;
    GetNextLineSplit(regionFile, subStrings, ':'); // Get number of regions
    int numRegions = stoi(subStrings[1]);

@@ -36,7 +36,7 @@ double TrajectoryOptimizer::GetValue(double t) const
 {
    Eigen::Vector4d timeVec;
    double t_sq = t * t;
-   double t_cu = t * t_cu;
+   double t_cu = t * t_sq;
    timeVec << 1, t, t_sq, t_cu;
 
    return _x.dot(timeVec);
