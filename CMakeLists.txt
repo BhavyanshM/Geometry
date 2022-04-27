@@ -47,7 +47,7 @@ set(GEOMTOOLS_SRC
         src/Elements/PlanarRegion.cpp
         src/Elements/RegionRing.cpp src/Elements/Line2D.cpp include/Line2D.h test/GeometryTests.cpp)
 
-add_library(geom-tools STATIC ${GEOMTOOLS_SRC} src/HullTools.cpp include/HullTools.h src/LineTools.cpp include/LineTools.h src/Optimizers/TrajectoryOptimizer.cpp include/TrajectoryOptimizer.h)
+add_library(geom-tools STATIC ${GEOMTOOLS_SRC} src/HullTools.cpp include/HullTools.h src/LineTools.cpp include/LineTools.h src/Optimizers/TrajectoryOptimizer.cpp include/TrajectoryOptimizer.h src/Elements/PoseTrajectory.cpp include/PoseTrajectory.h)
 target_link_libraries(geom-tools PUBLIC
         Eigen3::Eigen
         ${OpenCV_LIBS})
