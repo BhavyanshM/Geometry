@@ -228,7 +228,7 @@ void PlanarRegion::transform(Eigen::Vector3d translation, Eigen::Matrix3d rotati
    }
 }
 
-void PlanarRegion::CopyAndTransform(std::shared_ptr<PlanarRegion>& planarRegionToPack, RigidBodyTransform transform)
+void PlanarRegion::TransformAndFill(std::shared_ptr<PlanarRegion>& planarRegionToPack, RigidBodyTransform transform)
 {
    planarRegionToPack->SetNormal(this->GetNormal());
    planarRegionToPack->SetCenter(this->GetCenter());

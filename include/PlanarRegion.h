@@ -85,7 +85,7 @@ class PlanarRegion
 
       void transform(Eigen::Vector3d translation, Eigen::Matrix3d rotation);
 
-      void CopyAndTransform(std::shared_ptr<PlanarRegion>& planarRegionToPack, RigidBodyTransform transform);
+      void TransformAndFill(std::shared_ptr<PlanarRegion>& planarRegionToPack, RigidBodyTransform transform);
 
       const std::string& toString();
 
