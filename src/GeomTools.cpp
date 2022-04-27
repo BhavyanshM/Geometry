@@ -100,7 +100,7 @@ void GeomTools::LoadRegions(const std::string& file, std::vector<std::shared_ptr
 {
    if(erase) regions.clear();
    std::ifstream regionFile(file);
-   std::cout << "Loading Regions From: " << file;
+   std::cout << "Loading Regions From: " << file << std::endl;
    std::vector<std::string> subStrings;
    GetNextLineSplit(regionFile, subStrings, ':'); // Get number of regions
    int numRegions = stoi(subStrings[1]);

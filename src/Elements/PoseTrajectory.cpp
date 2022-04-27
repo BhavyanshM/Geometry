@@ -33,3 +33,34 @@ void PoseTrajectory::SetZConditions(double startTime, double endTime, double sta
 {
    _z.SetExtremalConditions(startTime, endTime, start, end, startRate, endRate);
 }
+
+void PoseTrajectory::Optimize()
+{
+   _yaw.Optimize();
+   _pitch.Optimize();
+   _roll.Optimize();
+   _x.Optimize();
+   _y.Optimize();
+   _z.Optimize();
+}
+
+RigidBodyTransform PoseTrajectory::GetPose(double time)
+{
+   RigidBodyTransform pose;
+   pose.SetAnglesAndTranslation({_roll.GetValue(time), _pitch.GetValue(time), _yaw.GetValue(time)},{_x.GetValue(time), _y.GetValue(time), _z.GetValue(time)});
+   return pose;
+}
+
+Eigen::Vector3d PoseTrajectory::GetAngles(double time)
+{
+   Eigen::Vector3d angles;
+   angles << _roll.GetValue(time), _pitch.GetValue(time), _yaw.GetValue(time);
+   return angles;
+}
+
+Eigen::Vector3d PoseTrajectory::GetPosition(double time)
+{
+   Eigen::Vector3d position;
+   position << _x.GetValue(time), _y.GetValue(time), _z.GetValue(time);
+   return position;
+}

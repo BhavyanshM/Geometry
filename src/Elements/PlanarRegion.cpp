@@ -292,7 +292,7 @@ void PlanarRegion::ComputeBoundaryVerticesPlanar()
    Eigen::AngleAxisf angleAxis(angle, axis);
    Eigen::Matrix3d rotation = angleAxis.toRotationMatrix().cast<double>();
    Eigen::Vector3d translation = Eigen::Vector3d(GetCenter().cast<double>());
-   transformToWorldFrame.SetAnglesAndTranslation(rotation, {0,0,0});
+   transformToWorldFrame.SetRotationAndTranslation(rotation, {0,0,0});
 
    for (int i = 0; i < boundaryVertices.size(); i++)
    {

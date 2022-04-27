@@ -10,6 +10,7 @@
 class TrajectoryOptimizer
 {
    public:
+      TrajectoryOptimizer() = default;
       TrajectoryOptimizer(double startTime, double endTime, double start, double end, double startRate, double endRate);
       void Optimize();
       void SetExtremalConditions(double startTime, double endTime, double start, double end, double startRate, double endRate);

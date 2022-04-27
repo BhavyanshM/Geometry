@@ -50,7 +50,7 @@ class RigidBodyTransform
 
       void print();
 
-      void SetAnglesAndTranslation(const Eigen::Matrix3d& rotation, const Eigen::Vector3d& translation);
+      void SetRotationAndTranslation(const Eigen::Matrix3d& rotation, const Eigen::Vector3d& translation);
 
       void SetAnglesAndTranslation(const Eigen::Vector3d& rotation, const Eigen::Vector3d& translation);
 

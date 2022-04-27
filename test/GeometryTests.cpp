@@ -7,6 +7,7 @@
 #include "catch2/catch_approx.hpp"
 
 #include "TrajectoryOptimizer.h"
+#include "PoseTrajectory.h"
 #include "Line2D.h"
 #include "HullTools.h"
 
@@ -69,6 +70,41 @@ TEST_CASE("Trajectory Optimization", "[TrajectoryOptimizer]")
    }
 
    REQUIRE(traj1.GetRate(0.5) == Approx(0.0f).margin(1e-5));
+
+}
+
+TEST_CASE("Pose Trajectory", "[PoseTrajectory]")
+{
+   PoseTrajectory pose;
+
+   pose.SetPitchConditions(0,1,0,0,0,0);
+   pose.SetRollConditions(0,1,0,0,0,0);
+   pose.SetYawConditions(0,1,0,0,0,0);
+   pose.SetXConditions(0,1,0,3,0,0);
+   pose.SetYConditions(0,1,0,3,0,0);
+   pose.SetZConditions(0,1,0,3,0,0);
+   pose.Optimize();
+
+   auto position = pose.GetPosition(0.5);
+
+   REQUIRE(position.x() == Approx(1.5).margin(1e-5));
+   REQUIRE(position.y() == Approx(1.5).margin(1e-5));
+   REQUIRE(position.z() == Approx(1.5).margin(1e-5));
+
+   pose.SetPitchConditions(0,1,0,1,0,0);
+   pose.SetRollConditions(0,1,0,1,0,0);
+   pose.SetYawConditions(0,1,0,1,0,0);
+   pose.SetXConditions(0,1,0,3,0,0);
+   pose.SetYConditions(0,1,0,2,0,0);
+   pose.SetZConditions(0,1,0,1,0,0);
+   pose.Optimize();
+
+   position = pose.GetPosition(1.0);
+
+   REQUIRE(position.x() == Approx(3.0).margin(1e-5));
+   REQUIRE(position.y() == Approx(2.0).margin(1e-5));
+   REQUIRE(position.z() == Approx(1.0).margin(1e-5));
+
 }
 
 int main(int argc, char** argv)

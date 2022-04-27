@@ -72,7 +72,7 @@ void RigidBodyTransform::SetQuaternionAndTranslation(const Eigen::Quaterniond& o
    matrix.block<3, 1>(0, 3) = translation;
 }
 
-void RigidBodyTransform::SetAnglesAndTranslation(const Eigen::Matrix3d& rotation, const Eigen::Vector3d& translation)
+void RigidBodyTransform::SetRotationAndTranslation(const Eigen::Matrix3d& rotation, const Eigen::Vector3d& translation)
 {
    matrix.setIdentity();
    matrix.block<3, 3>(0, 0) = rotation;
